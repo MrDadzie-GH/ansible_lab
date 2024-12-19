@@ -1,0 +1,31 @@
+---
+- name: Update Linux servers in my environment
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Update servers that use dnf pkg mgr
+      ansible.builtin.dnf:
+        name: '*'
+        update_cache: true
+        security: true
+        bugfix: true
+        state: latest
+      when: ansible_distribution in ["RedHat", "Rocky", "AlmaLinux"] 
+
+    - name: Update servers that use apt pkg mgr
+      ansible.builtin.apt:
+        name: '*'
+        update_cache: true
+        autoclean: true
+        autoremove: true
+        state: latest
+        clean: true
+      when: ansible_distribution == "Debian"
+
+    - name: Upgrade servers that use apt pkg mgr (OS upgrade)
+      ansible.builtin.apt:
+        upgrade: dist
+      when: ansible_distribution == "Debian"
+      
+    

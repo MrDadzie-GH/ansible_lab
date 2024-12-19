@@ -1,0 +1,6 @@
+[Local_EPEL9]
+name=Local EPEL 9
+baseurl=http://nexus.homelab.internal/local_epel9/x86_64
+enabled=1
+gpgkeycheck=1
+gpgkey=http://nexus.homelab.internal/local_epel9/x86_64/RPM-GPG-KEY-local-epel9

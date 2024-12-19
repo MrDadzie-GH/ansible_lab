@@ -1,0 +1,20 @@
+---
+- name: Create directory & copy files into it
+  hosts: local
+  become: true
+  tasks:
+
+    - name: create a dir if it does not exist
+      ansible.builtin.file:
+        path: /test_zone
+        state: directory
+        owner: sysadm
+        group: sysadm
+        mode: '755' 
+
+    - name: copy poem to managed node(s)
+      ansible.builtin.copy:
+        src: /dev_area/reason.txt
+        dest: /test_zone/
+        owner: sysadm
+        group: sysadm

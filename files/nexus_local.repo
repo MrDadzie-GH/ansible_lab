@@ -1,0 +1,15 @@
+[LocalRepo_BaseOS]
+name=LocalRepo - BaseOS
+metadata_expire=-1
+enabled=1
+gpgcheck=1
+baseurl=http://nexus.homelab.internal/local_repo/BaseOS
+gpgkey=http://nexus.homelab.internal/local_repo/RPM-GPG-KEY-redhat-release
+
+[LocalRepo_AppStream]
+name=LocalRepo - AppStream
+metadata_expire=-1
+enabled=1
+gpgcheck=1
+baseurl=http://nexus.homelab.internal/local_repo/AppStream
+gpgkey=http://nexus.homelab.internal/local_repo/RPM-GPG-KEY-redhat-release

@@ -1,0 +1,48 @@
+---
+- name: Create contract user for 90 days
+  hosts: all
+  become: true
+  tasks:
+
+  - name: Create mvezo group
+    ansible.builtin.group:
+      name: mvezo
+      state: present
+      gid: 10000
+
+  - name: Create statesmen group
+    ansible.builtin.group:
+      name: statesmen
+      state: present
+      gid: 10500
+
+  - name: Create contract user madiba for a period of 90 days
+    ansible.builtin.user:
+      name: madiba
+      state: present
+      password: $6$3a0ftPGt1p.qKdxY$NcF8cFGmdUOypX8QQACpakKs.QGpUevQ07mbGfafDW3xCtPqmXfWnzTHrV.6QpCL5gHNvkn7Y3tKJhQLVTGP81 
+      uid: 10000
+      comment: Nelson Mandela
+      password_expire_max: 30
+      password_expire_min: 1
+      group: mvezo
+      groups: statesmen, wheel
+      append: true
+      expires: 1737781200
+      generate_ssh_key: true
+      ssh_key_type: ed25519
+      ssh_key_file: .ssh/id_ed25519
+
+  - name: Add an authorized key for new user
+    ansible.posix.authorized_key:
+      user: madiba
+      state: present
+      key: "{{ lookup('file', '/home/sysadm/.ssh/authorized_keys') }}"
+
+  - name: Copy Madiba's favorite poem to his home directory
+    ansible.builtin.copy:
+      src: /dev_area/invictus.txt
+      dest: /home/madiba
+      owner: madiba
+      group: statesmen
+      mode: '0644'

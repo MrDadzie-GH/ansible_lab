@@ -1,0 +1,32 @@
+---
+- name: Configure SSH banner on all systems
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Copy ssh_banner file to specified location
+      ansible.builtin.copy:
+        src: /ansible_lab/files/ssh_banner
+        dest: /etc/ssh/ssh_config.d/
+        owner: root
+        group: root
+        mode: '0640'
+
+    - name: Ensure sshd_config has the banner parameter
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^(#)?Banner'
+        line: 'Banner /etc/ssh/ssh_config.d/ssh_banner'
+        owner: root
+        group: root
+        mode: '0600'
+        state: present
+        create: true
+        backup: true
+
+    - name: Restart sshd service to apply changes
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
+
+ 

@@ -1,0 +1,15 @@
+---
+- name: Patch server(s) in dev environment
+  hosts: local
+  become: true
+  tasks:
+
+    - name: Verify status of supported app or svc
+      ansible.builtin.shell:
+        cmd: if ps -aux | egrep 'httpd' | grep -v grep > /dev/null; then echo 'app_is_running'; else echo 'app_is_not_running'; fi
+      ignore_errors: true
+      register: app_check
+
+    - name: Display app status on stdout
+      ansible.builtin.debug:
+        msg: "{{ app_check.stdout }}"

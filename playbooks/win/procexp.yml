@@ -1,0 +1,10 @@
+---
+- name: Install procexp
+  hosts: win
+  gather_facts: false  
+  tasks:
+    - name: Install procexp on win10
+      win_chocolatey:
+        name: procexp
+        state: present
+ 
